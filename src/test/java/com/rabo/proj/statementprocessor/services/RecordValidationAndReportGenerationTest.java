@@ -1,7 +1,7 @@
 package com.rabo.proj.statementprocessor.services;
 
 import com.rabo.proj.statementprocessor.models.Record;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,13 +11,13 @@ import java.math.BigDecimal;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-class RecordValidationAndReportGenerationTest {
+public class RecordValidationAndReportGenerationTest {
 
     @Autowired
-    private RecordValidationAndReportGeneration reportGeneration;
+    public RecordValidationAndReportGeneration reportGeneration;
 
     @Test
-    void validateReferenceNumber() {
+    public void validateReferenceNumber() {
         Record record=new Record();
         record.setReference("122240");
         record.setAccountNumber("NL43AEGO0773393871");
@@ -30,7 +30,7 @@ class RecordValidationAndReportGenerationTest {
     }
 
     @Test
-    void validateEndBalance() {
+    public void validateEndBalance() {
         Record record=new Record();
         record.setReference("122240");
         record.setAccountNumber("NL43AEGO0773393871");

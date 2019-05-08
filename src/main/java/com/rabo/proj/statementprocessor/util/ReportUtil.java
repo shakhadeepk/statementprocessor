@@ -3,6 +3,8 @@ package com.rabo.proj.statementprocessor.util;
 import com.rabo.proj.statementprocessor.models.Record;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +13,8 @@ import java.io.IOException;
 
 @Component
 public class ReportUtil {
+
+    private final Logger LOG = LoggerFactory.getLogger(ReportUtil.class);
 
     @Value("${output.report}")
     private String outputReport;
@@ -22,7 +26,7 @@ public class ReportUtil {
 
     public void setUp(){
         try {
-            fileWriter=new FileWriter(outputReport);
+            fileWriter=new FileWriter(outputReport,false);
             csvFormat= CSVFormat.DEFAULT;
             csvPrinter=new CSVPrinter(fileWriter,csvFormat);
         } catch (IOException e) {
@@ -31,7 +35,7 @@ public class ReportUtil {
     }
 
     public void writeToFile(Record record){
-
+        LOG.debug("Record to be written in Report"+record);
         try {
             csvPrinter.printRecord(record.getReference(),record.getDescription());
             fileWriter.flush();

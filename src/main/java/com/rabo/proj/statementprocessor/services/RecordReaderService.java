@@ -5,6 +5,8 @@ import com.rabo.proj.statementprocessor.util.FileUtilsXML;
 import com.rabo.proj.statementprocessor.util.ReportUtil;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,8 @@ import java.util.List;
 
 @Service
 public class RecordReaderService {
+
+    private final Logger LOG = LoggerFactory.getLogger(RecordReaderService.class);
 
     private boolean initialized=false;
 
@@ -80,6 +84,7 @@ public class RecordReaderService {
             jaxbElement=fileUtility.readElementFromXML(this.unmarshaller);
             if(jaxbElement==null)break;
             record=(Record) jaxbElement.getValue();
+            LOG.info("XML Record to be validated "+record);
             if(!recordValidationAndReportGeneration.validateRecord(record)){
                 this.reportUtil.writeToFile(record);
             }
@@ -99,6 +104,7 @@ public class RecordReaderService {
                 record.setStartBalance(new BigDecimal(csvRecord.get(3)));
                 record.setMutation(new BigDecimal(csvRecord.get(4)));
                 record.setEndBalance(new BigDecimal(csvRecord.get(5)));
+                LOG.info("CSV Record to be validated "+record);
                 if(!recordValidationAndReportGeneration.validateRecord(record)){
                     this.reportUtil.writeToFile(record);
                 }

@@ -10,19 +10,14 @@ public class Record {
 
     @XmlAttribute
     private String reference;
-
     @XmlElement
     private String accountNumber;
-
     @XmlElement
     private String description;
-
     @XmlElement
     private BigDecimal startBalance;
-
     @XmlElement
     private BigDecimal mutation;
-
     @XmlElement
     private BigDecimal endBalance;
 

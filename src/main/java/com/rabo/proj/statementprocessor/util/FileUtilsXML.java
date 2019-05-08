@@ -1,5 +1,7 @@
 package com.rabo.proj.statementprocessor.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.xml.bind.JAXBElement;
@@ -13,6 +15,8 @@ import java.io.FileNotFoundException;
 
 @Component
 public class FileUtilsXML {
+
+    private final Logger LOG = LoggerFactory.getLogger(FileUtilsXML.class);
 
     private XMLStreamReader xmlStreamReader;
     private String xmlFileResource;
