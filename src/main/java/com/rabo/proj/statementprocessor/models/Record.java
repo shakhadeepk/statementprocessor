@@ -1,6 +1,8 @@
 package com.rabo.proj.statementprocessor.models;
 
 import javax.xml.bind.annotation.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
@@ -13,13 +15,16 @@ public class Record {
     private String accountNumber;
 
     @XmlElement
-    private Double startBalance;
+    private String description;
 
     @XmlElement
-    private Double mutation;
+    private BigDecimal startBalance;
 
     @XmlElement
-    private Double endBalance;
+    private BigDecimal mutation;
+
+    @XmlElement
+    private BigDecimal endBalance;
 
     public String getReference() {
         return reference;
@@ -37,28 +42,36 @@ public class Record {
         this.accountNumber = accountNumber;
     }
 
-    public Double getStartBalance() {
+    public BigDecimal getStartBalance() {
         return startBalance;
     }
 
-    public void setStartBalance(Double startBalance) {
-        this.startBalance = startBalance;
+    public void setStartBalance(BigDecimal startBalance) {
+        this.startBalance = startBalance.setScale(2, RoundingMode.FLOOR);
     }
 
-    public Double getMutation() {
+    public BigDecimal getMutation() {
         return mutation;
     }
 
-    public void setMutation(Double mutation) {
-        this.mutation = mutation;
+    public void setMutation(BigDecimal mutation) {
+        this.mutation = mutation.setScale(2,RoundingMode.FLOOR);
     }
 
-    public Double getEndBalance() {
+    public BigDecimal getEndBalance() {
         return endBalance;
     }
 
-    public void setEndBalance(Double endBalance) {
-        this.endBalance = endBalance;
+    public void setEndBalance(BigDecimal endBalance) {
+        this.endBalance = endBalance.setScale(2,RoundingMode.FLOOR);
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
@@ -66,6 +79,7 @@ public class Record {
         return "Record{" +
                 "reference='" + reference + '\'' +
                 ", accountNumber='" + accountNumber + '\'' +
+                ", description='" + description + '\'' +
                 ", startBalance=" + startBalance +
                 ", mutation=" + mutation +
                 ", endBalance=" + endBalance +

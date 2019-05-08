@@ -1,6 +1,5 @@
 package com.rabo.proj.statementprocessor.util;
 
-import com.rabo.proj.statementprocessor.models.Record;
 import org.springframework.stereotype.Component;
 
 import javax.xml.bind.JAXBElement;
@@ -13,7 +12,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 @Component
-public class FileUtility {
+public class FileUtilsXML {
 
     private XMLStreamReader xmlStreamReader;
     private String xmlFileResource;
@@ -53,7 +52,7 @@ public class FileUtility {
         this.xmlStreamReader = xmlStreamReader;
     }
 
-    public void initialize(){
+    public synchronized void initialize(){
         XMLInputFactory xmlInputFactory=XMLInputFactory.newInstance();
         xmlInputFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
 
