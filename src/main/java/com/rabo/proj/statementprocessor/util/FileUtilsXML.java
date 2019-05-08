@@ -64,26 +64,20 @@ public class FileUtilsXML {
         this.xmlStreamReader = xmlStreamReader;
     }
 
-    public void initialize(){
+    public void initialize() throws FileNotFoundException, XMLStreamException {
         XMLInputFactory xmlInputFactory=XMLInputFactory.newInstance();
         xmlInputFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
-
-        try {
-            this.xmlStreamReader =xmlInputFactory.createXMLStreamReader(new FileInputStream(this.xmlFileResource));
-        } catch (XMLStreamException | FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        this.xmlStreamReader =xmlInputFactory.createXMLStreamReader(new FileInputStream(this.xmlFileResource));
         initialized=true;
     }
 
-    public <Record> JAXBElement<Record> readElementFromXML(Unmarshaller unmarshaller){
+    public <Record> JAXBElement<Record> readElementFromXML(Unmarshaller unmarshaller) throws FileNotFoundException, XMLStreamException, ClassNotFoundException, JAXBException {
         JAXBElement jaxbElement=null;
 
         if(!initialized){
             initialize();
         }
-        try {
-            while(this.xmlStreamReader.hasNext()){
+        while(this.xmlStreamReader.hasNext()){
                 if(xmlStreamReader.isStartElement() && elementName.equalsIgnoreCase(xmlStreamReader.getLocalName())){
                     break;
                 }
@@ -94,12 +88,6 @@ public class FileUtilsXML {
                     && !(this.xmlStreamReader.getEventType() == XMLStreamReader.END_ELEMENT)){
                 jaxbElement=unmarshaller.unmarshal(this.xmlStreamReader,Class.forName(this.className));
             }
-
-        } catch (JAXBException | XMLStreamException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
         return jaxbElement;
 
     }

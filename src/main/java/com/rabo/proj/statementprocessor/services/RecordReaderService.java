@@ -14,6 +14,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.stream.XMLStreamException;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -61,17 +62,13 @@ public class RecordReaderService {
     private static final String tagName="record";
 
 
-    public void setUp(String fileSource){
-        try {
-            jaxbContext=JAXBContext.newInstance(Record.class);
-            unmarshaller=jaxbContext.createUnmarshaller();
-            fileUtility.setXmlFileResource(fileSource);
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
+    public void setUp(String fileSource) throws JAXBException {
+        jaxbContext=JAXBContext.newInstance(Record.class);
+        unmarshaller=jaxbContext.createUnmarshaller();
+        fileUtility.setXmlFileResource(fileSource);
     }
 
-    public void readXML(){
+    public void readXML() throws ClassNotFoundException, FileNotFoundException, JAXBException, XMLStreamException {
         JAXBElement jaxbElement = null;
         Record record=null;
         fileUtility.setClassName(elementClassName);
@@ -87,29 +84,24 @@ public class RecordReaderService {
         }
         fileUtility.setInitialized(false);
     }
-    public void readCSV(){
+    public void readCSV() throws IOException {
         Record record=null;
         List<Record> records = new ArrayList<>();
-        try {
-            Reader in=new FileReader(inputFile);
-            Iterable<CSVRecord> csvRecords= CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(in);
-            for (CSVRecord csvRecord:csvRecords){
-                record=new Record();
-                record.setReference(csvRecord.get(0));
-                record.setAccountNumber(csvRecord.get(1));
-                record.setDescription(csvRecord.get(2));
-                record.setStartBalance(new BigDecimal(csvRecord.get(3)));
-                record.setMutation(new BigDecimal(csvRecord.get(4)));
-                record.setEndBalance(new BigDecimal(csvRecord.get(5)));
-                LOG.info("CSV Record to be validated "+record);
-                if(!recordValidationAndReportGeneration.validateRecord(record)){
-                    this.reportUtil.writeToFile(record);
-                }
+        Reader in=new FileReader(inputFile);
+        Iterable<CSVRecord> csvRecords= CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(in);
+        for (CSVRecord csvRecord:csvRecords){
+            record=new Record();
+            record.setReference(csvRecord.get(0));
+            record.setAccountNumber(csvRecord.get(1));
+            record.setDescription(csvRecord.get(2));
+            record.setStartBalance(new BigDecimal(csvRecord.get(3)));
+            record.setMutation(new BigDecimal(csvRecord.get(4)));
+            record.setEndBalance(new BigDecimal(csvRecord.get(5)));
+            LOG.info("CSV Record to be validated "+record);
+            if(!recordValidationAndReportGeneration.validateRecord(record)){
+                this.reportUtil.writeToFile(record);
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+
     }
 }
