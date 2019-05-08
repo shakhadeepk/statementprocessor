@@ -26,6 +26,10 @@ public class RecordValidationAndReportGeneration {
         this.references.put(references,description);
     }
 
+    public void clearReferences(){
+        references.clear();
+    }
+
     public boolean validateReferenceNumber(Record record){
         if(this.getReferences(record.getReference())!=null){
             return false;

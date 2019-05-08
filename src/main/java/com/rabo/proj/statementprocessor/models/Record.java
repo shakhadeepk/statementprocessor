@@ -4,6 +4,14 @@ import javax.xml.bind.annotation.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+/*
+* Records read from CSV and XML file mapped to this object
+*
+*
+*
+*
+*
+* */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
 public class Record {

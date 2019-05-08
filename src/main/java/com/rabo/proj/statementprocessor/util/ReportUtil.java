@@ -5,21 +5,27 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.FileWriter;
 import java.io.IOException;
-
+/*
+* Utility created to generate csv report of the transaction files
+*
+*
+*
+* */
 @Component
 public class ReportUtil {
 
     private final Logger LOG = LoggerFactory.getLogger(ReportUtil.class);
 
-    @Value("${output.report}")
     private String outputReport;
 
-    private static String[] header={"Reference","Description"};
+    public void setOutputReport(String outputReport) {
+        this.outputReport = outputReport;
+    }
+
     private FileWriter fileWriter;
     private CSVPrinter csvPrinter;
     private CSVFormat csvFormat;

@@ -12,7 +12,11 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-
+/*
+*
+* Utility file to read XML files each record at a time. XMLStreamReader is used for efficiency
+*
+* */
 @Component
 public class FileUtilsXML {
 
@@ -23,6 +27,10 @@ public class FileUtilsXML {
     private boolean initialized=false;
     private String elementName;
     private String className;
+
+    public void setInitialized(boolean initialized) {
+        this.initialized = initialized;
+    }
 
     public String getClassName() {
         return className;
@@ -56,7 +64,7 @@ public class FileUtilsXML {
         this.xmlStreamReader = xmlStreamReader;
     }
 
-    public synchronized void initialize(){
+    public void initialize(){
         XMLInputFactory xmlInputFactory=XMLInputFactory.newInstance();
         xmlInputFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
 
@@ -68,7 +76,7 @@ public class FileUtilsXML {
         initialized=true;
     }
 
-    public synchronized <Record> JAXBElement<Record> readElementFromXML(Unmarshaller unmarshaller){
+    public <Record> JAXBElement<Record> readElementFromXML(Unmarshaller unmarshaller){
         JAXBElement jaxbElement=null;
 
         if(!initialized){

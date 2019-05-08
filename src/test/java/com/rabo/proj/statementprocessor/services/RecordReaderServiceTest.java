@@ -1,6 +1,7 @@
 package com.rabo.proj.statementprocessor.services;
 
 
+import com.rabo.proj.statementprocessor.util.ReportUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,17 +15,18 @@ public class RecordReaderServiceTest {
     @Autowired
     private RecordReaderService recordReaderService;
 
+    @Autowired
+    private ReportUtil reportUtil;
+
     @Test
-    public void readXML() {
+    public void readXMLAndCSV() {
+        reportUtil.setOutputReport("/home/hans/shankha/interview-project/assignment-shankadeep/report.csv");
+        reportUtil.setUp();
+        recordReaderService.setReportUtil(this.reportUtil);
         recordReaderService.setUp("/home/hans/shankha/interview-project/assignment-shankadeep/records.xml");
         recordReaderService.readXML();
         recordReaderService.setInputFile("/home/hans/shankha/interview-project/assignment-shankadeep/records.csv");
         recordReaderService.readCSV();
-    }
-
-    @Test
-    public void readCSV() {
-        recordReaderService.setInputFile("/home/hans/shankha/interview-project/assignment-shankadeep/records.csv");
-        recordReaderService.readCSV();
+        this.reportUtil.close();
     }
 }

@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PreDestroy;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
@@ -22,7 +21,11 @@ import java.io.Reader;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
+/*
+* Reads records from CSV and XML file. Each record is read, validated and corresponding report is created
+*
+*
+* */
 @Service
 public class RecordReaderService {
 
@@ -35,15 +38,8 @@ public class RecordReaderService {
 
     private ReportUtil reportUtil;
 
-    @Autowired
-    RecordReaderService(ReportUtil reportUtil){
-        this.reportUtil=reportUtil;
-        this.reportUtil.setUp();
-    }
-
-    @PreDestroy
-    public void close(){
-        this.reportUtil.close();
+    public void setReportUtil(ReportUtil reportUtil) {
+        this.reportUtil = reportUtil;
     }
 
     private String inputFile;
@@ -75,7 +71,7 @@ public class RecordReaderService {
         }
     }
 
-    public synchronized void readXML(){
+    public void readXML(){
         JAXBElement jaxbElement = null;
         Record record=null;
         fileUtility.setClassName(elementClassName);
@@ -89,8 +85,9 @@ public class RecordReaderService {
                 this.reportUtil.writeToFile(record);
             }
         }
+        fileUtility.setInitialized(false);
     }
-    public synchronized void readCSV(){
+    public void readCSV(){
         Record record=null;
         List<Record> records = new ArrayList<>();
         try {
